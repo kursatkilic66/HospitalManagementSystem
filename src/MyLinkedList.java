@@ -16,27 +16,36 @@ public class MyLinkedList {
         }
         head.next = newPatient;
     }
-    public void printList() {
-        /*
-            sout("---PATIENT'S VISITS--")
-            src.Node temp = head;
-            while(temp's next is not null)
-            1.sout("-Date: date\n-src.Doctor's name: doctorName\n-Diagnosis:diagnosis\n-Treatment:treatment")
-            2.sout("--------------")
-            3.temp.next = temp
-
-         */
-        if(isEmpty()) {
-            System.out.println("There is no visit!");
-            return;
+    public String printList() {
+        // 1. Liste boşsa direkt uyarı mesajını döndür
+        if (isEmpty()) {
+            return "There is no visit!";
         }
-        System.out.println("---PATIENT'S VISITS---");
+
+        StringBuilder sb = new StringBuilder();
+
+        // Başlığı ekle (sonuna \n koymayı unutmuyoruz)
+        sb.append("---PATIENT'S VISITS---\n");
+
         Node<Visit> temp = head;
+
         while (temp != null) {
-            System.out.printf("-Date: %td/%<tm/%<tY\n-src.Doctor's name: %s\n-Diagnosis: %s\n-Treatment: %s\n",temp.data.getDate(),temp.data.getDoctorName(),temp.data.getDiagnosis(),temp.data.getTreatment());
-            System.out.println("-------------------");
+            // 2. printf yerine String.format kullanarak aynı düzeni koruyoruz
+            String formattedVisit = String.format(
+                    "-Date: %td/%<tm/%<tY\n-Doctor's name: %s\n-Diagnosis: %s\n-Treatment: %s\n",
+                    temp.data.getDate(),
+                    temp.data.getDoctorName(),
+                    temp.data.getDiagnosis(),
+                    temp.data.getTreatment()
+            );
+
+            sb.append(formattedVisit);
+            sb.append("-------------------\n"); // Ayırıcı çizgi
+
             temp = temp.next;
         }
+
+        return sb.toString();
     }
     public int size() {
         Node<Visit> temp = head;
