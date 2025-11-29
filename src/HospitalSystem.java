@@ -1,3 +1,5 @@
+package src;
+
 public class HospitalSystem {
     MyHashTable patientTable;
     MyBST nameSearchTree;

@@ -1,3 +1,5 @@
+package src;
+
 public class MyGeneralTree {
     Object root;
     public void add() {}

@@ -1,3 +1,5 @@
+package src;
+
 public class Patient {
     int patientID,age,priorityLevel;
     String name;
