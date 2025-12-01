@@ -31,6 +31,15 @@ public class Patient {
         );
     }
 
+    public void printPatientVoid() {
+        System.out.println("---PATIENT'S INFORMATION---");
+        System.out.printf("-ID: %d\n-Priority: %d\n-Name: %s\n-Age: %d\n",
+                this.patientID,
+                this.priorityLevel,
+                this.name,this.age);
+        System.out.println("------------------------");
+    }
+
     public int getPatientID() {
         return patientID;
     }
