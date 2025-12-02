@@ -1,9 +1,9 @@
 package src;
 
-public class MyQueue {
-    private Node<Patient> head,rear;
-    public void enqueue(Patient p) {
-        Node<Patient> newPatient = new Node<>(p);
+public class MyQueue<T> {
+    private Node<T> head,rear;
+    public void enqueue(T p) {
+        Node<T> newPatient = new Node<T>(p);
         if(isEmpty()) {
             head = rear = newPatient;
             return;
@@ -11,19 +11,19 @@ public class MyQueue {
         rear.next = newPatient;
         rear = newPatient;
     }
-    public Patient dequeue() {
+    public Object dequeue() {
         if(isEmpty()) {
             System.out.println("Waiting Line is Empty!");
             return null;
         }
-        Patient removedPatient = head.data;
+        Object removedPatient = head.data;
         head = head.next;
         if(isEmpty()) {
             rear = null;
         }
         return removedPatient;
     }
-    public Patient peek() {
+    public Object peek() {
         if (isEmpty()) {
             System.out.println("Waiting Line is Empty!");
             return null;
@@ -34,7 +34,7 @@ public class MyQueue {
         return head.data;
     }
     public boolean isEmpty() {return head == null;}
-    public String printLine() {
+    /*public String printLine() {
         // 1. Liste boşsa direkt mesajı döndür
         if (isEmpty()) {
             return "Waiting Line is Empty!";
@@ -66,5 +66,5 @@ public class MyQueue {
 
         // 4. Tüm StringBuilder'ı String'e çevirip döndür
         return sb.toString();
-    }
+    }*/
 }

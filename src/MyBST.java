@@ -1,26 +1,41 @@
 package src;
 
-public class MyBST {
-    BSTNode root;
-    public void insert(Patient p) {
-        BSTNode newNode = new BSTNode(p);
-
-        // 1. Ağaç boşsa direkt kök yap
+public class MyBST<T extends  Comparable<T>> {
+    BSTNode<T> root;
+    public void insert(T p) {
+        BSTNode<T> newNode = new BSTNode<>(p);
         if (isEmpty()) {
             root = newNode;
             return;
         }
-
-        BSTNode temp = root;
-
+        BSTNode<T> temp = root;
         while (true) {
-            // İsimleri karşılaştır
-            // compareTo < 0 ise: temp(root) < newNode. Yani yeni gelen daha BÜYÜK (veya alfabetik olarak sonra).
-            // compareTo > 0 ise: temp(root) > newNode. Yani yeni gelen daha KÜÇÜK.
+            int comparison = p.compareTo(temp.data);
 
-            int comparison = temp.getData().getName().compareTo(newNode.getData().getName());
+            if (comparison < 0) {
+                // SOLA GİT (Yeni gelen daha küçük/önce)
+                if (temp.left == null) {
+                    temp.left = newNode; // Yer boş, bağla
+                    return; // İşlem bitti, çık
+                }
+                temp = temp.left; // Dolu, sola ilerle
+            }
+            else if (comparison > 0) {
+                // SAĞA GİT (Yeni gelen daha büyük/sonra)
+                if (temp.right == null) {
+                    temp.right = newNode; // Yer boş, bağla
+                    return; // İşlem bitti, çık
+                }
+                temp = temp.right; // Dolu, sağa ilerle
+            }
+            else {
+                // EŞİTSE (Aynı isimde kayıt var)
+                // İstersen burada uyarı verebilirsin veya hiçbir şey yapmazsın.
+                System.out.println("Bu kayıt zaten mevcut.");
+                return;
+            }
 
-            if (comparison > 0) {
+            /*if (comparison > 0) {
                 // SOLA GİTMELİ (Yeni gelen daha küçük/önce)
                 if (temp.left == null) {
                     temp.left = newNode; // Yer boşsa, buraya bağla
@@ -39,20 +54,20 @@ public class MyBST {
             else {
                 // İsimler EŞİTSE ne yapılacağına karar ver (Genelde eklenmez veya update edilir)
                 return;
-            }
+            }*/
         }
     }
-    public void search(String name) {
+    public void search(T name) {
         if(isEmpty()) {
             System.out.println("Patient List is Empty!");
             return;
         }
-        BSTNode temp = root;
+        BSTNode<T> temp = root;
         while(true){
-            int comparison = temp.getData().getName().compareTo(name);
+            int comparison = name.compareTo(temp.data);
             if(comparison == 0) {
                 System.out.println("User Has Found!");
-                temp.getData().printPatientVoid();
+                System.out.println(temp.data.toString());
                 return;
             }
             else if(comparison > 0) {
@@ -78,12 +93,12 @@ public class MyBST {
         }
         inorderRecursive(root);
     }
-    private void inorderRecursive(BSTNode node) {
+    private void inorderRecursive(BSTNode<T> node) {
         if(node == null) {
             return;
         }
         inorderRecursive(node.left);
-        System.out.println(node.getData().getName());
+        System.out.println(node.data.toString());
         inorderRecursive(node.right);
     }
     public boolean isEmpty() {

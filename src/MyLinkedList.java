@@ -1,22 +1,22 @@
 package src;
 
-public class MyLinkedList {
-    private Node<Visit> head;
-    public void add(Object data) {
+public class MyLinkedList<T> {
+    private Node<T> head;
+    public void add(T data) {
         /*newVNode = data
         if(head is null)
             1.head = newNode
             return
         head.next = newNode
         */
-        Node<Visit> newPatient = new Node<Visit>((Visit) data);
+        Node<T> newPatient = new Node<T>((T) data);
         if (isEmpty()) {
             head = newPatient;
             return;
         }
         head.next = newPatient;
     }
-    public String printList() {
+    /*public String printList() {
         // 1. Liste boşsa direkt uyarı mesajını döndür
         if (isEmpty()) {
             return "There is no visit!";
@@ -46,9 +46,9 @@ public class MyLinkedList {
         }
 
         return sb.toString();
-    }
+    }*/
     public int size() {
-        Node<Visit> temp = head;
+        Node<T> temp = head;
         if(isEmpty()) {
             System.out.println("src.Patient's src.Visit List is Empty!");
             return 0;
@@ -62,15 +62,47 @@ public class MyLinkedList {
         return size;
     }
     //Her kayda bir ID sağlandıktan sonra yazılacak
-    public void remove() {
-        if(head == null) {
-            System.out.println("There isn't any patient visit record to remove!");
+//    public void remove(T data) {
+//        if(head == null) {
+//            System.out.println("There isn't any patient visit record to remove!");
+//            return;
+//        }
+//        Node<T> temp = head;
+//        while(temp.data != null) {
+//            if(temp.data == data) {
+//
+//            }
+//        }
+//
+//    }
+    public void remove(T dataToRemove) {
+        if (head == null) {
+            System.out.println("List is empty.");
             return;
         }
-        Node<Visit> temp = head;
-
+        if (head.data.equals(dataToRemove)) {
+            head = head.next;
+            return;
+        }
+        Node<T> current = head;
+        while (current.next != null) {
+            if (current.next.data.equals(dataToRemove)) {
+                current.next = current.next.next;
+                return; // İşlem tamam, çık
+            }
+            current = current.next;
+        }
+        System.out.println("Veri bulunamadı: " + dataToRemove);
     }
     public boolean isEmpty() {
         return head == null;
+    }
+
+    public Node<T> getHead() {
+        return head;
+    }
+
+    public void setHead(Node<T> head) {
+        this.head = head;
     }
 }

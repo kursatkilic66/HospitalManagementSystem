@@ -1,17 +1,17 @@
 package src;
 
-public class BSTNode {
-    private Patient data;
-    BSTNode left,right;
+public class BSTNode<T> {
+    T data;
+    BSTNode<T> left,right;
 
-    public BSTNode(Patient data) {
+    public BSTNode(T data) {
         this.data = data;
     }
-    public Patient getData() {
+    /*public Object getData() {
         return data;
-    }
+    }*/
 
-    public void setData(Patient data) {
+    /*public void setData(Object data) {
         this.data = data;
-    }
+    }*/
 }
