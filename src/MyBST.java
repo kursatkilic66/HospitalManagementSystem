@@ -57,34 +57,27 @@ public class MyBST<T extends  Comparable<T>> {
             }*/
         }
     }
-    public void search(T name) {
+    public T search(T dataToFind) {
         if(isEmpty()) {
             System.out.println("Patient List is Empty!");
-            return;
+            return null;
         }
         BSTNode<T> temp = root;
-        while(true){
-            int comparison = name.compareTo(temp.data);
+        while(temp != null){
+            int comparison = dataToFind.compareTo(temp.data);
             if(comparison == 0) {
                 System.out.println("User Has Found!");
                 System.out.println(temp.data.toString());
-                return;
+                return temp.data;
             }
-            else if(comparison > 0) {
-                if(temp.left == null) {
-                    System.out.println("User Is Not Exists!");
-                    return;
-                }
+            else if(comparison < 0) {
                 temp = temp.left;
             }
             else {
-                if(temp.right == null) {
-                    System.out.println("User Is Not Exists");
-                    return;
-                }
                 temp = temp.right;
             }
         }
+        return null;
     }
     public void inOrder() {
         if(isEmpty()) {

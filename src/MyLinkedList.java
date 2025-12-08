@@ -14,7 +14,11 @@ public class MyLinkedList<T> {
             head = newPatient;
             return;
         }
-        head.next = newPatient;
+        Node<T> temp = head;
+        while(temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = newPatient;
     }
     /*public String printList() {
         // 1. Liste boşsa direkt uyarı mesajını döndür

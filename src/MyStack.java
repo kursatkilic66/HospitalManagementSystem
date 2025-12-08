@@ -18,14 +18,15 @@ public class MyStack<T> {
         newNode.next = top;
         top = newNode;
     }
-    public void pop() {
+    public T pop() {
         if  (isEmpty()) {
             System.out.println("Stack is empty");
-            return;
+            return null;
         }
-        Object topData = top.data;
+        T topData = top.data;
         top = top.next;
         System.out.println(topData);
+        return topData;
     }
     public void peek() {
         if  (isEmpty()) {

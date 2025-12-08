@@ -5,6 +5,13 @@ public class Doctor {
     String name,department;
     MyQueue waitingLine;
 
+    public Doctor(int doctorID, String name, String department) {
+        this.doctorID = doctorID;
+        this.name = name;
+        this.department = department;
+        this.waitingLine = new MyQueue<Patient>();
+    }
+
     public void addPatient(Patient p) {
 
     }

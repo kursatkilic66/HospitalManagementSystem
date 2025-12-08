@@ -1,6 +1,6 @@
 package src;
 
-public class Patient {
+public class Patient implements Comparable<Patient> {
     private int patientID,age,priorityLevel;
     private String name;
     private MyLinkedList<Visit> medicalHistory;
@@ -10,6 +10,7 @@ public class Patient {
     }
 
     public Patient() {
+        this.medicalHistory = new MyLinkedList<>();
     }
     public Patient(MyLinkedList<Visit> medicalHistory, String name, int priorityLevel, int age, int patientID) {
         this.medicalHistory = medicalHistory;
@@ -38,6 +39,10 @@ public class Patient {
                 this.priorityLevel,
                 this.name,this.age);
         System.out.println("------------------------");
+    }
+    @Override
+    public int compareTo(Patient other) {
+        return this.name.compareToIgnoreCase(other.name);
     }
 
     public int getPatientID() {
