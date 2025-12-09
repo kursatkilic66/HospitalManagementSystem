@@ -105,4 +105,59 @@ public class MyPriorityQueue<T extends Comparable<T>> {
         heap[i] = heap[j];
         heap[j] = temp;
     }
+
+    public boolean removeById(int id) {
+        int indexToRemove = -1;
+
+        // 1. Silinecek elemanın indisini bul (Linear Search)
+        for (int i = 0; i < size; i++) {
+            // T generic olduğu için cast etmemiz gerekebilir ya da
+            // ERPatient içindeki patient'a ulaşmamız lazım.
+            // Burada T'nin ERPatient olduğunu varsayarak işlem yapıyoruz:
+            if (heap[i] instanceof ERPatient) {
+                ERPatient erP = (ERPatient) heap[i];
+                if (erP.patient.getPatientID() == id) {
+                    indexToRemove = i;
+                    break;
+                }
+            }
+        }
+
+        if (indexToRemove == -1) return false; // Bulunamadı
+
+        // 2. Son elemanı, silinecek elemanın yerine koy
+        heap[indexToRemove] = heap[size - 1];
+        heap[size - 1] = null; // Bellek temizliği
+        size--;
+
+        // 3. Heap yapısını onar (Hem aşağı hem yukarı bakmak gerekebilir)
+        // Basit çözüm: Önce aşağı it, olmazsa yukarı çıkar
+        if (size > 0 && indexToRemove < size) {
+            bubbleDown(indexToRemove);
+            bubbleUp(indexToRemove);
+        }
+
+        return true;
+    }
+    // Heap dizisindeki elemanları yazdırır
+    public void printQueue() {
+        if (isEmpty()) {
+            System.out.println("    (Acil Servis Boş)");
+            return;
+        }
+
+        // 1. Mevcut Heap dizisinin, sadece dolu olan kısmını kopyalıyoruz.
+        // (Arrays sınıfını kullanabilmek için java.util.Arrays yazıyoruz)
+        T[] tempArray = java.util.Arrays.copyOf(heap, size);
+
+        // 2. Bu kopyayı sıralıyoruz.
+        // Java varsayılan olarak Küçükten -> Büyüğe sıralar (1, 3, 5, 9 gibi).
+        java.util.Arrays.sort(tempArray);
+
+        // 3. Bizim için "Önceliği Yüksek" olan "Büyük" sayı olduğu için (10 puan > 1 puan),
+        // listeyi SONDAN BAŞA doğru (Tersten) yazdırıyoruz.
+        for (int i = tempArray.length - 1; i >= 0; i--) {
+            System.out.println("    - " + tempArray[i].toString());
+        }
+    }
 }

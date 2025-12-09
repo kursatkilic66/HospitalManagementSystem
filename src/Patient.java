@@ -85,6 +85,19 @@ public class Patient implements Comparable<Patient> {
         this.medicalHistory = medicalHistory;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Patient other = (Patient) obj;
+        return this.patientID == other.patientID;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[ID: %d] %s (Yaş: %d, Öncelik: %d)",
+                this.patientID, this.name, this.age, this.priorityLevel);
+    }
     /*public String toString(String choice) {
         return switch (choice) {
             case "name" -> String.format("-Name: %s", getName());
