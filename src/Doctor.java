@@ -2,8 +2,9 @@ package src;
 
 public class Doctor {
     int doctorID;
-    String name,department;
-    MyQueue waitingLine;
+    String name;
+    String department;
+    MyQueue<Patient> waitingLine;
 
     public Doctor(int doctorID, String name, String department) {
         this.doctorID = doctorID;
@@ -11,26 +12,12 @@ public class Doctor {
         this.department = department;
         this.waitingLine = new MyQueue<Patient>();
     }
-
     public void addPatient(Patient p) {
-
-    }
-    public void callNextPatient() {
-
+        waitingLine.enqueue(p);
     }
 
-    public String toString(String choice) {
-        return switch (choice) {
-            case "name" -> String.format("-Name: %s", name);
-            case "all" -> String.format(
-                    "-ID: %d\n-Department: %s\n-Name: %s\n----------------",
-                    this.doctorID,
-                    this.department,
-                    this.name
-                    //this.age
-                    //this.medicalHistory.printList() // Burası için aşağıya not düştüm*
-            );
-            default -> null;
-        };
+    @Override
+    public String toString() {
+        return name + " (" + department + ")";
     }
 }

@@ -21,14 +21,12 @@ public class Patient implements Comparable<Patient> {
     }
 
     public String printPatient() {
-        // String.format aynen printf gibi çalışır ama ekrana yazmaz, metni döndürür.
         return String.format(
                 "---WAITING LINE---\n-ID: %d\n-Priority: %d\n-Name: %s\n-Age: %d\n----------------",
                 this.patientID,
                 this.priorityLevel,
                 this.name,
                 this.age
-                //this.medicalHistory.printList() // Burası için aşağıya not düştüm*
         );
     }
 
@@ -98,18 +96,4 @@ public class Patient implements Comparable<Patient> {
         return String.format("[ID: %d] %s (Yaş: %d, Öncelik: %d)",
                 this.patientID, this.name, this.age, this.priorityLevel);
     }
-    /*public String toString(String choice) {
-        return switch (choice) {
-            case "name" -> String.format("-Name: %s", getName());
-            case "all" -> String.format(
-                    "-ID: %d\n-Priority: %d\n-Name: %s\n-Age: %d\n----------------",
-                    this.patientID,
-                    this.priorityLevel,
-                    this.name,
-                    this.age
-                    //this.medicalHistory.printList() // Burası için aşağıya not düştüm*
-            );
-            default -> null;
-        };
-    }*/
 }

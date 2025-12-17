@@ -1,11 +1,4 @@
 package src;
-//
-//public class MyStack {
-//    Node top;
-//    public void push() {}
-//    public void pop() {}
-//    public void peek() {}
-//}
 
 public class MyStack<T> {
     Node<T> top;

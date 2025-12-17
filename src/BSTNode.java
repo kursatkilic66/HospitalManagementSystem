@@ -7,11 +7,4 @@ public class BSTNode<T> {
     public BSTNode(T data) {
         this.data = data;
     }
-    /*public Object getData() {
-        return data;
-    }*/
-
-    /*public void setData(Object data) {
-        this.data = data;
-    }*/
 }

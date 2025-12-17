@@ -54,7 +54,6 @@
 
 package src;
 
-// Node sınıfını import etmeyi unutma (Eğer aynı paketteyse gerek yok)
 
 public class MyGeneralTree<T extends Comparable<T>> {
     MGTNode<T> root;
@@ -63,21 +62,18 @@ public class MyGeneralTree<T extends Comparable<T>> {
         this.root = root;
     }
 
-    // --- 1. REMOVE METODU (KULLANICININ ÇAĞIRDIĞI) ---
     public void remove(T data) {
         if (isEmpty()) {
             System.out.println("Tree is empty!");
             return;
         }
 
-        // 1. Durum: Silinecek olan KÖK ise
         if (root.data.compareTo(data) == 0) {
             root = null; // Ağacı tamamen sil
             System.out.println(data + " (Root) ve altındaki her şey silindi.");
             return;
         }
 
-        // 2. Durum: Derinlemesine arama başlat
         boolean isRemoved = removeRecursive(root, data);
 
         if (isRemoved) {
@@ -87,44 +83,35 @@ public class MyGeneralTree<T extends Comparable<T>> {
         }
     }
 
-    // --- 2. REMOVE YARDIMCI METOD (RECURSIVE) ---
     private boolean removeRecursive(MGTNode<T> parent, T dataToRemove) {
-        // Parent'ın çocukları yoksa işlem yapma
         if (parent.children == null || parent.children.isEmpty()) {
             return false;
         }
 
-        // MyLinkedList içinde gezmek için Node alıyoruz
-        // NOT: Node<MGTNode<T>> dememizin sebebi, listenin içinde MGTNode nesneleri olması.
+
         Node<MGTNode<T>> current = parent.children.getHead();
 
-        // Bu döngü, parent'ın doğrudan çocuklarını gezer
         while (current != null) {
             MGTNode<T> childNode = current.data; // Sıradaki çocuk
 
-            // KONTROL A: Aradığımız veri BU ÇOCUK mu?
             if (childNode.data.compareTo(dataToRemove) == 0) {
-                // Evet bulduk! Parent'ın listesinden bu node'u silmeliyiz.
-                // MyLinkedList sınıfında remove(T data) olduğunu varsayıyoruz.
+
                 parent.children.remove(childNode);
                 return true;
             }
 
-            // KONTROL B: Değilse, bu çocuğun kendi çocuklarına (torunlara) bak
             boolean foundInSubTree = removeRecursive(childNode, dataToRemove);
             if (foundInSubTree) {
-                return true; // Alt dallarda bulundu ve silindi
+                return true;
             }
 
-            // Bir sonraki kardeşe geç
             current = current.next;
         }
 
-        return false; // Bu kolda bulunamadı
+        return false;
     }
 
-    // --- 3. SEARCH METODU (RECURSIVE OLMALI) ---
-    // while(true) mantığı burada çalışmaz, recursive gezmek zorundayız.
+
     public MGTNode<T> search(T dataToFind) {
         return searchRecursive(root, dataToFind);
     }
@@ -160,12 +147,17 @@ public class MyGeneralTree<T extends Comparable<T>> {
         parent.addChild(newChild);
     }
 
+
+    public void addNode(MGTNode<T> parent, MGTNode<T> childNode) {
+        parent.addChild(childNode);
+    }
+
     public void printTree(MGTNode<T> node, String prefix) {
         if (node == null) return;
 
         System.out.println(prefix + "└── " + node.data.toString());
 
-        // Generic cast uyarısını suppress edebilirsin veya type-safe yapabilirsin
+
         Node<MGTNode<T>> temp = node.children.getHead();
         while (temp != null) {
             printTree(temp.data, prefix + "    ");
