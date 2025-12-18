@@ -5,10 +5,14 @@ import java.util.Random;
 public class HospitalSystem {
 
     public MyPriorityQueue<ERPatient> emergencyQueue;
-    public MyQueue<Patient> normalQueue; // Genel Kayıt Defteri gibi çalışacak
+    public MyQueue<Patient> normalQueue; // Genel Kayıt Defteri
     public MyStack<Integer> undoStack;
     public MyGeneralTree<String> hospitalStructure;
     public MyBST<Patient> patientArchive;
+
+    // --- YENİ EKLENEN HASH TABLOLARI ---
+    public MyHashTable<Doctor> doctorTable;
+    public MyHashTable<Patient> patientTable;
 
     public Department kbbDept;
     public Department dahiliyeDept;
@@ -26,7 +30,18 @@ public class HospitalSystem {
         this.undoStack = new MyStack<>();
         this.patientArchive = new MyBST<>();
 
+        // Tabloları başlatıyoruz
+        this.doctorTable = new MyHashTable<>(50);
+        this.patientTable = new MyHashTable<>(500);
+
+        // Konsolda başlangıçta görmek için süsleme
+        System.out.println("Sistem başlatılıyor... Doktor ID'leri oluşturuluyor...");
+        System.out.println("-----------------------------------------------------");
+
         initializeDepartmentsAndDoctors();
+
+        System.out.println("-----------------------------------------------------");
+
         initializeTree();
     }
 
@@ -35,15 +50,36 @@ public class HospitalSystem {
         dahiliyeDept = new Department("Dahiliye", 5);
         psikolojiDept = new Department("Psikoloji", 5);
 
+        // --- KBB Doktorları ---
+        Doctor d1 = new Doctor(generateID(), "Yusuf Emre Güntekin", "KBB");
+        kbbDept.addDoctor(d1);
+        doctorTable.put(d1.doctorID, d1);
+        // TEST İÇİN ID YAZDIRMA:
+        System.out.println("👨‍⚕️ Doktor: " + d1.name + " | ID: " + d1.doctorID);
 
-        kbbDept.addDoctor(new Doctor(generateID(), "Yusuf Emre Güntekin", "KBB"));
-        kbbDept.addDoctor(new Doctor(generateID(), "Mehmet Kaplan", "KBB"));
+        Doctor d2 = new Doctor(generateID(), "Mehmet Kaplan", "KBB");
+        kbbDept.addDoctor(d2);
+        doctorTable.put(d2.doctorID, d2);
+        System.out.println("👨‍⚕️ Doktor: " + d2.name + " | ID: " + d2.doctorID);
 
-        dahiliyeDept.addDoctor(new Doctor(generateID(), "Türker Emre Kuru", "Dahiliye"));
-        dahiliyeDept.addDoctor(new Doctor(generateID(), "Arda Yaşar", "Dahiliye"));
+        // --- Dahiliye Doktorları ---
+        Doctor d3 = new Doctor(generateID(), "Türker Emre Kuru", "Dahiliye");
+        dahiliyeDept.addDoctor(d3);
+        doctorTable.put(d3.doctorID, d3);
+        System.out.println("👨‍⚕️ Doktor: " + d3.name + " | ID: " + d3.doctorID);
 
-        psikolojiDept.addDoctor(new Doctor(generateID(), "Mert Kaçmaz", "Psikoloji"));
+        Doctor d4 = new Doctor(generateID(), "Arda Yaşar", "Dahiliye");
+        dahiliyeDept.addDoctor(d4);
+        doctorTable.put(d4.doctorID, d4);
+        System.out.println("👨‍⚕️ Doktor: " + d4.name + " | ID: " + d4.doctorID);
+
+        // --- Psikoloji Doktorları ---
+        Doctor d5 = new Doctor(generateID(), "Mert Kaçmaz", "Psikoloji");
+        psikolojiDept.addDoctor(d5);
+        doctorTable.put(d5.doctorID, d5);
+        System.out.println("👨‍⚕️ Doktor: " + d5.name + " | ID: " + d5.doctorID);
     }
+
     private void initializeTree() {
         MGTNode<String> root = new MGTNode<>("Bashekimlik");
         hospitalStructure = new MyGeneralTree<>(root);
@@ -87,17 +123,19 @@ public class HospitalSystem {
         int id = generateID();
         int priority = isEmergency ? severity : 1;
 
-        Patient newPatient = new Patient(null, name, priority, age, id);
+        Patient newPatient = new Patient(name, priority, age, id);
+
+        // 1. Hash Tablosuna Ekle
+        patientTable.put(id, newPatient);
 
         if (isEmergency) {
             emergencyQueue.add(new ERPatient(newPatient));
-            System.out.println("⚠️ [ACİL] Hasta Kaydedildi: " + name);
+            System.out.println("⚠️ [ACİL] Hasta Kaydedildi: " + name + " (ID: " + id + ")");
         } else {
             if (selectedDoctor != null) {
                 selectedDoctor.waitingLine.enqueue(newPatient);
-                System.out.println("✅ Randevu Oluşturuldu: " + selectedDoctor.name + " -> " + name);
+                System.out.println("✅ Randevu Oluşturuldu: " + selectedDoctor.name + " -> " + name + " (ID: " + id + ")");
             }
-
             normalQueue.enqueue(newPatient);
         }
 
@@ -120,7 +158,7 @@ public class HospitalSystem {
         System.out.println("[" + dept.name + "]");
         for(int i=0; i<dept.doctorCount; i++) {
             Doctor d = dept.doctorsList[i];
-            System.out.println("  Dr. " + d.name + " Sırası:");
+            System.out.println("  Dr. " + d.name + " (ID: " + d.doctorID + ") Sırası:");
             if(d.waitingLine.isEmpty()) System.out.println("    (Boş)");
             else d.waitingLine.printQueue();
         }
@@ -133,8 +171,10 @@ public class HospitalSystem {
         }
         Integer lastId = undoStack.pop();
 
+        patientTable.remove(lastId);
+
         if (emergencyQueue.removeById(lastId)) {
-            System.out.println("🔙 UNDO: Hasta Acil'den silindi.");
+            System.out.println("🔙 UNDO: Hasta Acil'den silindi. (ID: " + lastId + ")");
             return;
         }
 
@@ -145,13 +185,15 @@ public class HospitalSystem {
         removeFromAllDoctors(dahiliyeDept, dummy);
         removeFromAllDoctors(psikolojiDept, dummy);
 
-        System.out.println("🔙 UNDO: Hasta sistemden ve doktor sırasından silindi.");
+        System.out.println("🔙 UNDO: Hasta sistemden ve doktor sırasından silindi. (ID: " + lastId + ")");
     }
+
     private void removeFromAllDoctors(Department dept, Patient p) {
         for(int i=0; i<dept.doctorCount; i++) {
             dept.doctorsList[i].waitingLine.remove(p);
         }
     }
+
     public void showHierarchy() {
         System.out.println("\n--- 🏢 HASTANE HİYERARŞİSİ (General Tree) ---");
         hospitalStructure.printTree(hospitalStructure.root, "");

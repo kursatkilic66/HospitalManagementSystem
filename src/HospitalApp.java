@@ -9,8 +9,9 @@ public class HospitalApp {
         System.out.println("\n>> Devam etmek için ENTER'a basınız...");
         scanner.nextLine();
     }
+
     public static void main(String[] args) {
-        long studentNo = 230316055L;
+        long studentNo = 230316055L; // Seed olarak kullanılıyor
         HospitalSystem hospital = new HospitalSystem(studentNo);
         boolean running = true;
 
@@ -23,6 +24,8 @@ public class HospitalApp {
             System.out.println("3 - Sıraları Görüntüle");
             System.out.println("4 - Hastane Hiyerarşisi");
             System.out.println("5 - Son İşlemi Geri Al (Undo)");
+            System.out.println("6 - ID ile Doktor Ara (Hash Table)");
+            System.out.println("7 - ID ile Hasta Ara (Hash Table)");
             System.out.println("0 - Çıkış");
             System.out.print("Seçiminiz: ");
 
@@ -61,15 +64,17 @@ public class HospitalApp {
                     System.out.println("\n--- DOKTOR SEÇİNİZ ---");
                     selectedDept.listDoctors();
                     System.out.print("Seçim (Sıra No): ");
-                    int docIndex = Integer.parseInt(scanner.nextLine()) - 1;
-
-                    if (docIndex >= 0 && docIndex < selectedDept.doctorCount) {
-                        Doctor selectedDoctor = selectedDept.doctorsList[docIndex];
-                        hospital.registerPatient(nName, nAge, false, 1, selectedDoctor);
-                    } else {
-                        System.out.println("Geçersiz Doktor Seçimi!");
+                    try {
+                        int docIndex = Integer.parseInt(scanner.nextLine()) - 1;
+                        if (docIndex >= 0 && docIndex < selectedDept.doctorCount) {
+                            Doctor selectedDoctor = selectedDept.doctorsList[docIndex];
+                            hospital.registerPatient(nName, nAge, false, 1, selectedDoctor);
+                        } else {
+                            System.out.println("Geçersiz Doktor Seçimi!");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Hata: Sayı giriniz.");
                     }
-
                     promptEnterKey();
                     break;
 
@@ -80,14 +85,15 @@ public class HospitalApp {
                     int eAge = Integer.parseInt(scanner.nextLine());
 
                     int severity = 0;
-                    while(severity < 1 || severity > 10) {
+                    while (severity < 1 || severity > 10) {
                         System.out.print("Aciliyet Derecesi (1-10 arası, 10 en acil): ");
                         try {
                             severity = Integer.parseInt(scanner.nextLine());
-                        } catch(Exception e) {}
+                        } catch (Exception e) {
+                        }
                     }
 
-                    hospital.registerPatient(eName, eAge, true, severity,null);
+                    hospital.registerPatient(eName, eAge, true, severity, null);
                     promptEnterKey();
                     break;
 
@@ -100,8 +106,54 @@ public class HospitalApp {
                     hospital.showHierarchy();
                     promptEnterKey();
                     break;
+
                 case 5:
                     hospital.processUndo();
+                    promptEnterKey();
+                    break;
+
+                case 6: // ID ile Doktor Ara
+                    System.out.println("\n--- 🔎 DOKTOR ARAMA ---");
+                    // İpucu: Listeleme sırasında doktor ID'lerini görebilirsiniz.
+                    System.out.print("Aranacak Doktor ID: ");
+                    System.out.println();
+                    try {
+                        int searchDocId = Integer.parseInt(scanner.nextLine());
+                        Doctor foundDoc = hospital.doctorTable.get(searchDocId);
+
+                        if (foundDoc != null) {
+                            System.out.println("✅ DOKTOR BULUNDU:");
+                            System.out.println("   ID: " + foundDoc.doctorID);
+                            System.out.println("   İsim: " + foundDoc.name);
+                            System.out.println("   Bölüm: " + foundDoc.department);
+                        } else {
+                            System.out.println("❌ Bu ID'ye sahip doktor bulunamadı.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Hatalı ID formatı!");
+                    }
+                    promptEnterKey();
+                    break;
+
+                case 7: // ID ile Hasta Ara
+                    System.out.println("\n--- 🔎 HASTA ARAMA ---");
+                    System.out.print("Aranacak Hasta ID: ");
+                    try {
+                        int searchPatId = Integer.parseInt(scanner.nextLine());
+                        Patient foundPat = hospital.patientTable.get(searchPatId);
+
+                        if (foundPat != null) {
+                            System.out.println("✅ HASTA BULUNDU:");
+                            System.out.println("   ID: " + foundPat.getPatientID());
+                            System.out.println("   İsim: " + foundPat.getName());
+                            System.out.println("   Yaş: " + foundPat.getAge());
+                            System.out.println("   Aciliyet: " + (foundPat.getPriorityLevel() > 1 ? "ACİL (" + foundPat.getPriorityLevel() + ")" : "Normal"));
+                        } else {
+                            System.out.println("❌ Bu ID'ye sahip hasta sistemde yok (veya silinmiş).");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Hatalı ID formatı!");
+                    }
                     promptEnterKey();
                     break;
 
@@ -109,6 +161,7 @@ public class HospitalApp {
                     running = false;
                     System.out.println("Çıkış yapılıyor...");
                     break;
+
                 default:
                     System.out.println("Geçersiz seçim!");
                     promptEnterKey();

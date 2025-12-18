@@ -3,40 +3,14 @@ package src;
 public class Patient implements Comparable<Patient> {
     private int patientID,age,priorityLevel;
     private String name;
-    private MyLinkedList<Visit> medicalHistory;
-    public void addVisit() {}
-    public void getHistory() {
-
-    }
 
     public Patient() {
-        this.medicalHistory = new MyLinkedList<>();
     }
-    public Patient(MyLinkedList<Visit> medicalHistory, String name, int priorityLevel, int age, int patientID) {
-        this.medicalHistory = medicalHistory;
+    public Patient(String name, int priorityLevel, int age, int patientID) {
         this.name = name;
         this.priorityLevel = priorityLevel;
         this.age = age;
         this.patientID = patientID;
-    }
-
-    public String printPatient() {
-        return String.format(
-                "---WAITING LINE---\n-ID: %d\n-Priority: %d\n-Name: %s\n-Age: %d\n----------------",
-                this.patientID,
-                this.priorityLevel,
-                this.name,
-                this.age
-        );
-    }
-
-    public void printPatientVoid() {
-        System.out.println("---PATIENT'S INFORMATION---");
-        System.out.printf("-ID: %d\n-Priority: %d\n-Name: %s\n-Age: %d\n",
-                this.patientID,
-                this.priorityLevel,
-                this.name,this.age);
-        System.out.println("------------------------");
     }
     @Override
     public int compareTo(Patient other) {
@@ -73,14 +47,6 @@ public class Patient implements Comparable<Patient> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public MyLinkedList<Visit> getMedicalHistory() {
-        return medicalHistory;
-    }
-
-    public void setMedicalHistory(MyLinkedList<Visit> medicalHistory) {
-        this.medicalHistory = medicalHistory;
     }
 
     @Override
