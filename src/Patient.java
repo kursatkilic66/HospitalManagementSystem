@@ -59,7 +59,7 @@ public class Patient implements Comparable<Patient> {
 
     @Override
     public String toString() {
-        return String.format("[ID: %d] %s (Yaş: %d, Öncelik: %d)",
+        return String.format("[ID: %d] %s (Age: %d, Priority: %d)",
                 this.patientID, this.name, this.age, this.priorityLevel);
     }
 }

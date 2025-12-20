@@ -56,13 +56,13 @@ public class MyQueue<T> {
             current = current.next;
         }
 
-        System.out.println("Silinecek kayıt normal kuyrukta bulunamadı.");
+        System.out.println("There Is Nothing To Delete On Queue.");
     }
     public boolean isEmpty() {return head == null;}
 
     public void printQueue() {
         if (isEmpty()) {
-            System.out.println("    (Kuyruk Boş)");
+            System.out.println("    (Queue Is Empty)");
             return;
         }
         Node<T> temp = head;

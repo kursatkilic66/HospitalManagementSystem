@@ -13,6 +13,6 @@ public class ERPatient implements Comparable<ERPatient> {
     }
     @Override
     public String toString() {
-        return patient.toString() + " [Derece: " + patient.getPriorityLevel() + "]";
+        return patient.toString() + " [Level: " + patient.getPriorityLevel() + "]";
     }
 }

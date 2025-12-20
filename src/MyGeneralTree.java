@@ -69,17 +69,17 @@ public class MyGeneralTree<T extends Comparable<T>> {
         }
 
         if (root.data.compareTo(data) == 0) {
-            root = null; // Ağacı tamamen sil
-            System.out.println(data + " (Root) ve altındaki her şey silindi.");
+            root = null;
+            System.out.println(data + " Everything Deleted From The Root and Beyond.");
             return;
         }
 
         boolean isRemoved = removeRecursive(root, data);
 
         if (isRemoved) {
-            System.out.println(data + " başarıyla silindi.");
+            System.out.println(data + " Deleted Successfully.");
         } else {
-            System.out.println(data + " bulunamadı.");
+            System.out.println(data + " Is Not Found.");
         }
     }
 
@@ -92,7 +92,7 @@ public class MyGeneralTree<T extends Comparable<T>> {
         Node<MGTNode<T>> current = parent.children.getHead();
 
         while (current != null) {
-            MGTNode<T> childNode = current.data; // Sıradaki çocuk
+            MGTNode<T> childNode = current.data;
 
             if (childNode.data.compareTo(dataToRemove) == 0) {
 
@@ -119,26 +119,21 @@ public class MyGeneralTree<T extends Comparable<T>> {
     private MGTNode<T> searchRecursive(MGTNode<T> currentNode, T dataToFind) {
         if (currentNode == null) return null;
 
-        // 1. Bulduk mu?
         if (currentNode.data.compareTo(dataToFind) == 0) {
             return currentNode;
         }
 
-        // 2. Bulamadıysak çocuklarını gez
         Node<MGTNode<T>> temp = currentNode.children.getHead();
 
         while (temp != null) {
-            // Recursive çağrı: Çocuğun içine gir ve ara
             MGTNode<T> result = searchRecursive(temp.data, dataToFind);
 
-            // Eğer alt taraftan dolu bir sonuç döndüyse, bulduk demektir. Yukarı taşı.
             if (result != null) {
                 return result;
             }
             temp = temp.next;
         }
 
-        // Hiçbir yerde yoksa null dön
         return null;
     }
 

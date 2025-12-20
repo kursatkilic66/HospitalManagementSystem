@@ -28,7 +28,7 @@ public class MyBST<T extends  Comparable<T>> {
                 temp = temp.right;
             }
             else {
-                System.out.println("Bu kayıt zaten mevcut.");
+                System.out.println("There Is Already A Register.");
                 return;
             }
         }

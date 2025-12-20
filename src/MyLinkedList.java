@@ -15,21 +15,6 @@ public class MyLinkedList<T> {
         temp.next = newPatient;
     }
 
-    public int size() {
-        Node<T> temp = head;
-        if(isEmpty()) {
-            System.out.println("src.Patient's src.Visit List is Empty!");
-            return 0;
-        }
-        int size = 0;
-        while(temp != null) {
-            size++;
-            temp = temp.next;
-        }
-        System.out.printf("List's size is %d",size);
-        return size;
-    }
-
     public void remove(T dataToRemove) {
         if (head == null) {
             System.out.println("List is empty.");
@@ -47,7 +32,7 @@ public class MyLinkedList<T> {
             }
             current = current.next;
         }
-        System.out.println("Veri bulunamadı: " + dataToRemove);
+        System.out.println("Data Is Not Found!: " + dataToRemove);
     }
     public boolean isEmpty() {
         return head == null;

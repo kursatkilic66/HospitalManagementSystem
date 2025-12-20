@@ -40,19 +40,7 @@ public class MyPriorityQueue<T extends Comparable<T>> {
         }
         heap = newHeap;
         capacity = newCapacity;
-        System.out.println("Kuyruk kapasitesi artırıldı: " + capacity);
-    }
-
-    public T poll() {
-        if (isEmpty()) return null;
-
-        T result = heap[0];
-
-        heap[0] = heap[size - 1];
-        size--;
-
-        bubbleDown(0);
-        return result;
+        System.out.println("Queue Capacity Has Increased!: " + capacity);
     }
 
     private void bubbleUp(int index) {
@@ -119,7 +107,7 @@ public class MyPriorityQueue<T extends Comparable<T>> {
     }
     public void printQueue() {
         if (isEmpty()) {
-            System.out.println("    (Acil Servis Boş)");
+            System.out.println("    (EMERGENCY SERVICE EMPTY!)");
             return;
         }
         T[] tempArray = java.util.Arrays.copyOf(heap, size);
