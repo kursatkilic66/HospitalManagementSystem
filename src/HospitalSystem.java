@@ -51,7 +51,7 @@ public class HospitalSystem {
         kbbDept.addDoctor(d1);
         doctorTable.put(d1.doctorID, d1);
         System.out.println("️ Doctor: " + d1.name + " | ID: " + d1.doctorID);
-
+        // --- Kulak Burun Boğaz Doktorları ---
         Doctor d2 = new Doctor(generateID(), "Mehmet Kaplan", "Otorhinolaryngology");
         kbbDept.addDoctor(d2);
         doctorTable.put(d2.doctorID, d2);
@@ -138,7 +138,7 @@ public class HospitalSystem {
     }
 
     public void showAllQueues() {
-        System.out.println("\n=== GÜNCEL DURUM ===");
+        System.out.println("\n=== CURRENT SITUATIONS ===");
         System.out.println("--- EMERGENCY SERVICE ---");
         emergencyQueue.printQueue();
 
